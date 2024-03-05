@@ -1,0 +1,118 @@
+﻿
+@model List<Message>
+@{
+    ViewData["Title"] = "Message";
+    int counter = 0;
+}
+
+<div class="card">
+    <div class="card-body">
+        <div class="d-flex align-items-center justify-content-between">
+            <h5 class="card-title">Message</h5>
+            <a asp-action="create" class="btn btn-success">
+                <i class="bx bx-plus"></i>
+            </a>
+        </div>
+        <!-- Active Table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Fullname</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Message</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Message message in Model)
+                {
+                    <tr>
+                        <th scope="row">@(++counter)</th>
+                        <td>@message.Fullname</td>
+                        <td>@(message.Subject.Length > 25 ? message.Subject.Substring(0, 25) + "..." : message.Subject)</td>
+                        <td>@message.Email</td>
+                        <td>@(message.Text.Length > 25 ? message.Text.Substring(0, 25) + "..." : message.Text)</td>
+                        <td>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input check-status" type="checkbox" data-id="@message.Id" id="flexSwitchCheckDefault" @((bool)message.IsRead ? "checked" : "")>
+                            </div>
+                        </td>
+                        <td>
+                            <a asp-action="detail" asp-route-id="@message.Id" class="btn btn-primary">
+                                <i class="ri-eye-fill"></i>
+                            </a>
+                            <a asp-action="delete" asp-route-id="@message.Id" class="btn btn-danger delete">
+                                <i class="bx bxs-trash"></i>
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <!-- End Active Table -->
+
+    </div>
+</div>
+
+
+@section JS{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let deletes = document.querySelectorAll('.delete');
+        let checks = document.querySelectorAll('.check-status');
+        // delete tag
+        deletes.forEach(del => {
+            del.addEventListener('click', function (e) {
+                e.preventDefault();
+                let url = del.getAttribute('href');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(url)
+                            .then(res => res.json())
+                            .then(data => {
+                                console.log(data);
+                                if (data.code == 204) {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        data.message,
+                                        'success'
+                                    );
+                                    setInterval(() => window.location.reload(), 2000);
+                                } else {
+                                    Swal.fire(
+                                        'Deleted!',
+                                        data.message,
+                                        'error'
+                                    );
+                                }
+                            });
+                    }
+                })
+            });
+        });
+        checks.forEach(check => {
+            check.addEventListener('change', function () {
+                let id = check.getAttribute('data-id');
+                let status = check.getAttribute('data-status');
+                let url = `/manage/message/changestatus/${id}?status=${status}`;
+                fetch(url)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data);
+                    });
+            });
+        });
+    </script>
+    }

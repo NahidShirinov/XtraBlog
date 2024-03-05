@@ -1,0 +1,99 @@
+﻿@model Setting
+@{
+    ViewData["Title"] = "Setting";
+}
+
+
+<div class="pagetitle">
+    <h1>Settings</h1>
+     <input type="hidden" id="message" value="@TempData["Message"]" />
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="index" asp-controller="dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item">
+                
+                  Setting
+             </li>
+           
+        </ol>
+    </nav>
+</div>  <!-- End Page Title -->
+<section>
+    <form method="post" enctype="multipart/form-data">
+
+        <div class="col-md-6">
+            <label for="inputCity" class="form-label">Email</label>
+            <input type="text" asp-for="Email" class="form-control" id="inputCity">
+            <span asp-validation-for="Email" class="invalid-feedback" style="display:block">
+
+            </span>
+        </div>
+        <div class="col-md-6">
+            <label for="inputCity" class="form-label">Phone</label>
+            <input type="text" asp-for="Phone" class="form-control" id="inputCity">
+            <span asp-validation-for="Phone" class="invalid-feedback" style="display:block"> </span>
+            </div>
+            <div class="mb-3">
+                <label for="inputNumber" class="form-label">Facebook</label>
+                <input class="form-control" asp-for="Facebook" id="formFile" multiple>
+                <span asp-validation-for="Facebook" class="invalid-feedback" style="display:block"></span>  </div>
+        <div class="mb-3">
+            <label for="inputNumber" class="form-label">Instagram</label>
+            <input class="form-control" asp-for="Instagram" id="formFile" multiple>
+            <span asp-validation-for="Instagram" class="invalid-feedback" style="display:block"></span>
+        </div>
+        <div class="mb-3">
+            <label for="inputNumber" class="form-label">Linkedin</label>
+            <input class="form-control" asp-for="Linkedin" id="formFile" multiple>
+            <span asp-validation-for="Linkedin" class="invalid-feedback" style="display:block"></span>
+        </div>
+        <div class="mb-3">
+            <label for="inputNumber" class="form-label">Twitter</label>
+            <input class="form-control" asp-for="Twitter" id="formFile" multiple>
+            <span asp-validation-for="Twitter" class="invalid-feedback" style="display:block"></span>
+        </div>
+        
+
+             
+                <div class="mb-3">
+                <button type="submit" class="btn btn-success">Submit</button>
+                <a asp-action="Index" class="btn btn-secondary">Back</a>
+            </div>
+        </form>
+
+</section>
+
+
+@section Css{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+}
+
+@section JS{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        // toastr message
+        let message = $('#message').val();
+        if (message) {
+            toastr["success"](message)
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2500",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+    </script>
+}

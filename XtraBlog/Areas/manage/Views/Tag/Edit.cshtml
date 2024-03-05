@@ -1,0 +1,45 @@
+﻿@model Tags
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="pagetitle">
+    <h1>Tags</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="index" asp-controller="dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item">
+                <a asp-action="index">
+                    Tags
+                </a>
+            </li>
+            <li class="breadcrumb-item active">Edit</li>
+        </ol>
+    </nav>
+</div>  <!-- End Page Title -->
+<section>
+    <form asp-action="edit">
+
+        <div class="col-md-6">
+            <label for="inputCity" class="form-label">Edit</label>
+            <input type="text" asp-for="Name" class="form-control" id="inputCity">
+            <span asp-validation-for="Name" class="invalid-feedback" style="display:block">
+
+            </span>
+
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success">Edit</button>
+            <a asp-action="Index" class="btn btn-secondary">Back</a>
+        </div>
+
+    </form>
+
+
+</section>
+
+@section JS{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

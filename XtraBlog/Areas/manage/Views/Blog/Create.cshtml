@@ -1,0 +1,100 @@
+﻿@model Post
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="pagetitle">
+    <h1>Posts</h1>
+    <nav>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="index" asp-controller="dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item">
+                <a asp-action="index">
+                    Posts
+                </a>
+            </li>
+            <li class="breadcrumb-item active">Create</li>
+        </ol>
+    </nav>
+</div>  <!-- End Page Title -->
+<section>
+    <form asp-action="create" enctype="multipart/form-data">
+
+        <div class="col-md-6">
+            <label for="inputCity" class="form-label">Title</label>
+            <input type="text" asp-for="Title" class="form-control" id="inputCity">
+            <span asp-validation-for="Title" class="invalid-feedback" style="display:block">
+
+            </span>
+
+        </div>
+        <div class="col-md-6">
+            <label for="inputCity" class="form-label">Author</label>
+            <input type="text" asp-for="Created_By" class="form-control" id="inputCity">
+            <span asp-validation-for="Created_By" class="invalid-feedback" style="display:block">
+
+            </span>
+            <div class="mb-3">
+                <label for="inputNumber" class="form-label">File Upload</label>
+                <input class="form-control" asp-for="FormFile" id="formFile" multiple>
+                <span asp-validation-for="FormFile" class="invalid-feedback" style="display:block"></span>
+                <div class="box-container">
+                    <!-- <div class="image-box">
+                      <img src="./assets/img/card.jpg" width="150" alt="">
+                      <div class="close">
+                        <i class="ri-close-fill"></i>
+                      </div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="col-12">
+
+                <div class="card">
+                    <div class="card-body translate">
+                        <h5 class="card-title">TinyMCE Editor</h5>
+                        <textarea id="editor" asp-for="Description" class="tinymce-editor form-control"></textarea>
+
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label>Tags</label>
+                <select class="js-example-basic-multiple" style="width:100%" asp-for="TagIds" multiple="multiple">
+                    @foreach (Tags tag in (List<Tags>)ViewBag.Tags)
+                    {
+                        <option value="@tag.Id">@tag.Name</option>
+                    }
+                </select>
+            </div>
+
+        </div>
+        <div class="mb-3">
+            <button type="submit" class="btn btn-success">Create</button>
+            <a asp-action="Index" class="btn btn-secondary">Back</a>
+        </div>
+
+    </form>
+
+
+</section>
+
+
+@section Css{
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+@section JS{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        // In your Javascript (external .js resource or <script> tag)
+        $(document).ready(function () {
+            $('.js-example-basic-single').select2();
+        });
+
+        $(document).ready(function () {
+            $('.js-example-basic-multiple').select2();
+        });
+    </script>
+}

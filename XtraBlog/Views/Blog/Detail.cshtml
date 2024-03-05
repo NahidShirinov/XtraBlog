@@ -1,0 +1,183 @@
+﻿@model ViewModel
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<main class="tm-main">
+    <!-- Search form -->
+    <input type="hidden" id="error_message" value="@TempData["Error"]" />
+    <input type="hidden" id="success_message" value="@TempData["Success"]" />
+    <div class="row tm-row">
+        <div class="col-12">
+            <form method="GET" class="form-inline tm-mb-80 tm-search-form">
+                
+                <input class="form-control tm-search-input" name="query" type="text" placeholder="Search..." aria-label="Search">
+                <button class="tm-search-button" type="submit">
+                    <i class="fas fa-search tm-search-icon" aria-hidden="true"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <div class="row tm-row">
+        <div class="col-12">
+            <hr class="tm-hr-primary tm-mb-55">
+            <!-- Video player 1422x800 -->
+            @*<video width="954" height="535" controls class="tm-mb-40">
+            <source src="~/video/wheat-field.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+            </video>*@
+            <img width="954" height="535" src="~/Uploads/Posts/@Model.Post.Image" />
+        </div>
+    </div>
+    <div class="row tm-row">
+        <div class="col-lg-8 tm-post-col">
+            <div class="tm-post-full">
+                <div class="mb-4">
+                    <h2 class="pt-2 tm-color-primary tm-post-title">@Model.Post.Title</h2>
+                    <p class="tm-mb-40">@Model.Post.Date?.ToString("MMM ddd ,yyyy") by @Model.Post.Created_By</p>
+                    @Html.Raw(@Model.Post.Description)
+                    <span class="d-block text-right tm-color-primary">
+                        @foreach (TagPost tagPost in Model.Post.TagPost)
+                        {
+                            @tagPost.Tags.Name
+                        }
+                    </span>
+                </div>
+
+                <!-- Comments -->
+                <div>
+                    <h2 class="tm-color-primary tm-post-title">Comments</h2>
+                    <hr class="tm-hr-primary tm-mb-45">
+                    @foreach (Comments comment in Model.Post.Comments.Where(x => (bool)x.IsVerified)) 
+                    {
+                        <div class="tm-comment tm-mb-45">
+                            <figure class="tm-comment-figure">
+                                <img src="~/img/comment-1.jpg" alt="Image" class="mb-2 rounded-circle img-thumbnail">
+                                <figcaption class="tm-color-primary text-center">@comment.Name</figcaption>
+                            </figure>
+                            <div>
+                                <p>
+                                    @comment.Comment
+                                </p>
+                                <div class="d-flex justify-content-between">
+                                    <a href="#" class="tm-color-primary">REPLY</a>
+                                    <span class="tm-color-primary">@Model.comments.Craeateat?.ToString("MMM ddd , yyyy")</span>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+
+                    <form asp-action="sendcomment" asp-controller="Blog" asp-route-slug="@Model.Post.Slug" class="mb-5 tm-comment-form" method="post">
+                        <h2 class="tm-color-primary tm-post-title mb-4">Your comment</h2>
+                        <div class="mb-4">
+                            <input class="form-control" asp-for="comments.Name" type="text">
+                           
+                        </div>
+                        <div class="mb-4">
+                            <input class="form-control" asp-for="comments.Email" type="text">
+                           
+
+                        </div>
+                        <div class="mb-4">
+                            <textarea class="form-control" asp-for="comments.Comment" rows="6"></textarea>
+                           
+
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="tm-btn tm-btn-primary tm-btn-small">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <aside class="col-lg-4 tm-aside-col">
+            <div class="tm-post-sidebar">
+               @*<hr class="mb-3 tm-hr-primary">
+                <h2 class="mb-4 tm-post-title tm-color-primary">Categories</h2>
+                <ul class="tm-mb-75 pl-5 tm-category-list">
+                    <li><a href="#" class="tm-color-primary">Visual Designs</a></li>
+                    <li><a href="#" class="tm-color-primary">Travel Events</a></li>
+                    <li><a href="#" class="tm-color-primary">Web Development</a></li>
+                    <li><a href="#" class="tm-color-primary">Video and Audio</a></li>
+                    <li><a href="#" class="tm-color-primary">Etiam auctor ac arcu</a></li>
+                    <li><a href="#" class="tm-color-primary">Sed im justo diam</a></li>
+                </ul>*@
+        <hr class="mb-3 tm-hr-primary">
+        <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Posts</h2>
+        @foreach (Post item in ViewBag.Relateds)
+        {
+            <a asp-route="single-post" asp-route-slug="@item.Slug" class="d-block tm-mb-40">
+                <figure>
+                    <img src="~/uploads/posts/@item.Image" alt="Image" class="mb-3 img-fluid">
+                    <figcaption class="tm-color-primary">
+                        @item.Title
+                    </figcaption>
+                </figure>
+            </a>
+        }
+            </div>
+        </aside>
+    </div>
+    <footer class="row tm-row">
+        <div class="col-md-6 col-12 tm-color-gray">
+            Design: <a rel="nofollow" target="_parent" href="https://templatemo.com" class="tm-external-link">TemplateMo</a>
+        </div>
+        <div class="col-md-6 col-12 tm-color-gray tm-copyright">
+            Copyright 2020 Xtra Blog Company Co. Ltd.
+        </div>
+    </footer>
+</main>
+@section style{
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" />
+        }
+
+@section Script{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script>
+        // toastr message
+        let success = $('#success_message').val();
+        let error = $('#error_message').val();
+        if (error) {
+            toastr["error"](error)
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2500",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+        if (success) {
+            toastr["success"](success)
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "newestOnTop": false,
+                "progressBar": false,
+                "positionClass": "toast-bottom-center",
+                "preventDuplicates": false,
+                "onclick": null,
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "2500",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        }
+    </script>
+}
